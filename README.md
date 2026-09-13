@@ -39,7 +39,9 @@
 </p>
 
 <p>
-  <img src="https://komarev.com/ghpvc/?username=QianKunBoss&label=PROFILE+VIEWS&style=for-the-badge&color=1F6FEB" alt="Views" />
+  <!-- 访问计数：visitorbadge.io（Cloudflare 承载）。原 komarev 为单机 nginx + no-store，
+       camo 每次访问都要回源，会间歇性裂图。自托管方案见 worker/views-counter.js -->
+  <img src="https://api.visitorbadge.io/api/visitors?path=QianKunBoss.QianKunBoss&label=PROFILE%20VIEWS&labelColor=%230B1F33&countColor=%231F6FEB&style=for-the-badge" alt="Views" />
   <img src="https://img.shields.io/github/followers/QianKunBoss?style=for-the-badge&color=58A6FF&labelColor=0B1F33&label=Followers" alt="Followers" />
   <img src="https://img.shields.io/github/stars/QianKunBoss/ClassScoreManageSystem?style=for-the-badge&color=7DF9FF&labelColor=0B1F33&label=CSMS+Stars" alt="Stars" />
   <img src="https://img.shields.io/github/last-commit/QianKunBoss/ClassScoreManageSystem?style=for-the-badge&color=2C9CDF&labelColor=0B1F33&label=Last+Commit" alt="Last Commit" />
