@@ -1,0 +1,44 @@
+name: Update Stats Cards
+
+# 每天 00:40 (UTC) 重新抓取 GitHub 数据并刷新 assets/stats.svg 与 assets/languages.svg
+on:
+  schedule:
+    - cron: "40 0 * * *"
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/gen-stats.mjs"
+      - ".github/workflows/stats.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate stats SVGs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/gen-stats.mjs ${{ github.repository_owner }}
+
+      - name: Commit changes
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/stats.svg assets/languages.svg
+          if git diff --staged --quiet; then
+            echo "数据无变化，跳过提交"
+          else
+            git commit -m "chore(stats): 自动刷新数据卡片"
+            git push
+          fi

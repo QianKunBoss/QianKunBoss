@@ -4,12 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>QianKunBoss · 用代码把想法变成系统</title>
-<meta name="description" content="QianKunBoss —— Vue.js / Node.js 全栈开发者。CSMS 班级操行积分管理系统、自建邮箱站、设备状态监测站等项目的统一入口。" />
+<meta name="description" content="QianKunBoss —— Vue.js / Node.js 全栈开发者。CSMS 班级积分管理系统、Cloud Mail 邮箱、设备状态监测、二级域名分发、短网址、在线观影、音乐解锁、GitHub 加速等服务的统一入口。" />
 <!--
   视觉规范：宇宙科技风 · 钢蓝色系
   本页面为纯色实现，未使用任何 CSS 渐变（linear-gradient / radial-gradient）。
   网格背景与发光效果分别由 SVG Pattern 与 box-shadow 实现。
-  TODO-SITE-* 处的 href="#" 待替换为真实线上地址。
+
+  站点卡片的数据源统一放在 <script id="site-data"> 里？—— 没有，为保证无 JS 也能完整渲染，
+  这里全部写死为静态 HTML。新增站点：复制任意一个 <article class="site"> 块即可。
 -->
 <style>
   :root {
@@ -55,7 +57,7 @@
   .orb-2 { width: 380px; height: 380px; background: var(--cyan);  top: 420px;  right: -140px; opacity: .10; }
   .orb-3 { width: 420px; height: 420px; background: var(--blue-2); bottom: -160px; left: 32%; opacity: .08; }
 
-  .wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .wrap { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
 
   /* ── 顶部导航 ───────────────────────────────────────── */
   header {
@@ -64,28 +66,28 @@
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--line);
   }
-  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
   .brand { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-weight: 700; letter-spacing: .06em; color: #fff; }
   .brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); animation: pulse 2.2s infinite; }
   @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
-  .nav-links { display: flex; gap: 26px; font-family: var(--mono); font-size: 13px; letter-spacing: .04em; }
+  .nav-links { display: flex; gap: 24px; font-family: var(--mono); font-size: 13px; letter-spacing: .04em; }
   .nav-links a { color: var(--text-dim); }
   .nav-links a:hover { color: var(--cyan); }
 
   /* ── Hero ───────────────────────────────────────────── */
-  .hero { padding: 92px 0 72px; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
+  .hero { padding: 84px 0 64px; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
   .tag {
     display: inline-flex; align-items: center; gap: 8px;
     font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
     color: var(--cyan); border: 1px solid var(--line);
     background: var(--panel); border-radius: 999px; padding: 5px 14px; margin-bottom: 22px;
   }
-  h1 { font-size: clamp(38px, 6vw, 62px); line-height: 1.08; letter-spacing: -.02em; color: #fff; font-weight: 800; }
+  h1 { font-size: clamp(38px, 6vw, 60px); line-height: 1.08; letter-spacing: -.02em; color: #fff; font-weight: 800; }
   h1 .accent { color: var(--blue-3); text-shadow: 0 0 26px rgba(88,166,255,.45); }
   .typed-line { margin-top: 20px; font-family: var(--mono); font-size: 16px; color: var(--blue-3); min-height: 26px; }
   .caret { display: inline-block; width: 9px; height: 18px; background: var(--cyan); vertical-align: -3px; margin-left: 2px; animation: blink 1s step-end infinite; }
   @keyframes blink { 50% { opacity: 0; } }
-  .hero-desc { margin-top: 22px; max-width: 560px; color: var(--text-dim); }
+  .hero-desc { margin-top: 22px; max-width: 580px; color: var(--text-dim); }
   .hero-actions { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
 
   .btn {
@@ -98,7 +100,6 @@
   .btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
   .btn.primary:hover { background: var(--blue-2); border-color: var(--blue-2); box-shadow: 0 0 26px rgba(44,156,223,.45); }
 
-  /* 头像 / 身份标识 */
   .monogram {
     width: 172px; height: 172px; border-radius: 26px;
     background: var(--panel); border: 1px solid var(--line);
@@ -116,18 +117,19 @@
   /* ── 指标条 ─────────────────────────────────────────── */
   .metrics {
     display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-    background: var(--line-soft); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 88px;
+    background: var(--line-soft); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 84px;
   }
   .metric { background: var(--bg-2); padding: 22px 18px; text-align: center; }
   .metric b { display: block; font-family: var(--mono); font-size: 26px; color: var(--blue-3); }
   .metric span { font-size: 12px; color: var(--text-mute); letter-spacing: .08em; }
 
   /* ── 通用区块 ───────────────────────────────────────── */
-  section { padding: 22px 0 78px; }
-  .sec-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 34px; }
+  section { padding: 22px 0 74px; }
+  .sec-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 14px; }
   .sec-no { font-family: var(--mono); font-size: 12px; color: var(--text-mute); letter-spacing: .14em; }
   h2 { font-size: 26px; color: #fff; font-weight: 700; letter-spacing: -.01em; }
   .sec-head .rule { flex: 1; height: 1px; background: var(--line); }
+  .sec-sub { font-family: var(--mono); font-size: 12.5px; color: var(--text-mute); margin-bottom: 32px; }
 
   /* 关于我 */
   .about-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
@@ -138,11 +140,12 @@
   .about-card li { position: relative; padding-left: 18px; font-size: 13.5px; color: var(--text-dim); margin-bottom: 9px; }
   .about-card li::before { content: "▸"; position: absolute; left: 0; color: var(--blue-2); }
 
-  /* 项目站点卡片 */
+  /* 站点卡片 */
   .sites { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
   .site {
-    position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
-    padding: 26px; transition: .22s ease; overflow: hidden;
+    position: relative; display: flex; flex-direction: column;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 24px; transition: .22s ease; overflow: hidden;
   }
   .site::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px; background: var(--blue); opacity: 0; transition: .22s ease; }
   .site:hover { border-color: var(--blue); box-shadow: 0 10px 40px rgba(31,111,235,.22); transform: translateY(-4px); }
@@ -155,10 +158,10 @@
   .status { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; padding: 3px 9px; border-radius: 999px; border: 1px solid; }
   .status.live { color: var(--cyan); border-color: rgba(125,249,255,.35); background: rgba(125,249,255,.07); }
   .status.todo { color: var(--text-mute); border-color: var(--line); }
-  .site h3 { font-size: 18px; color: #fff; margin-bottom: 6px; }
+  .site h3 { font-size: 17.5px; color: #fff; margin-bottom: 6px; }
   .site .slug { font-family: var(--mono); font-size: 12px; color: var(--text-mute); margin-bottom: 12px; }
-  .site p { font-size: 13.5px; color: var(--text-dim); margin-bottom: 16px; min-height: 44px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+  .site p { font-size: 13.5px; color: var(--text-dim); margin-bottom: 16px; flex: 1; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 18px; }
   .chip { font-family: var(--mono); font-size: 11px; color: var(--blue-3); background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px; padding: 3px 9px; }
   .site-links { display: flex; gap: 10px; }
   .site-links a { font-family: var(--mono); font-size: 12.5px; padding: 8px 16px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg-2); color: var(--text-dim); }
@@ -166,13 +169,20 @@
   .site-links a.go { background: var(--blue); border-color: var(--blue); color: #fff; }
   .site-links a.go:hover { background: var(--blue-2); border-color: var(--blue-2); }
 
-  /* 预留位 */
-  .site.reserved { border-style: dashed; border-color: var(--line-soft); background: rgba(10,22,38,.5); }
+  .site.reserved { border-style: dashed; border-color: var(--line-soft); background: rgba(10,22,38,.45); }
   .site.reserved h3, .site.reserved p { color: var(--text-mute); }
   .site.reserved .site-icon { border-style: dashed; color: var(--text-mute); }
 
+  /* 开源项目 */
+  .repos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .repo { background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 22px; transition: .2s ease; }
+  .repo:hover { border-color: var(--blue-3); box-shadow: 0 0 26px rgba(88,166,255,.18); transform: translateY(-3px); }
+  .repo h3 { font-size: 16.5px; color: #fff; margin-bottom: 10px; font-family: var(--mono); }
+  .repo p { font-size: 13.5px; color: var(--text-dim); margin: 12px 0 16px; }
+  .repo .links { display: flex; gap: 10px; }
+
   /* 技术栈 */
-  .stack-group { margin-bottom: 26px; }
+  .stack-group { margin-bottom: 24px; }
   .stack-label { font-family: var(--mono); font-size: 12px; color: var(--text-mute); letter-spacing: .12em; margin-bottom: 12px; }
   .stack { display: flex; flex-wrap: wrap; gap: 9px; }
   .tech {
@@ -184,13 +194,13 @@
   .tech i { width: 7px; height: 7px; border-radius: 50%; background: var(--blue-3); }
 
   /* 数据区 */
-  .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .stats-stack { display: grid; gap: 18px; }
   .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px; }
   .panel img { display: block; width: 100%; border-radius: 8px; }
-  .stat-fallback { font-family: var(--mono); font-size: 12px; color: var(--text-mute); padding: 14px; }
+  .stat-fallback { font-family: var(--mono); font-size: 12px; color: var(--text-mute); margin-top: 14px; }
 
   /* 页脚 */
-  footer { border-top: 1px solid var(--line); padding: 46px 0 60px; margin-top: 30px; text-align: center; }
+  footer { border-top: 1px solid var(--line); padding: 46px 0 60px; margin-top: 24px; text-align: center; }
   footer .quote { font-family: var(--mono); font-size: 14px; color: var(--blue-3); margin-bottom: 18px; }
   footer .meta { font-family: var(--mono); font-size: 12px; color: var(--text-mute); }
   .footer-links { display: flex; justify-content: center; gap: 22px; margin: 20px 0; font-family: var(--mono); font-size: 13px; }
@@ -200,10 +210,10 @@
   .reveal.on { opacity: 1; transform: none; }
 
   /* 响应式 */
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; gap: 32px; padding: 60px 0 48px; }
+  @media (max-width: 920px) {
+    .hero { grid-template-columns: 1fr; gap: 32px; padding: 56px 0 44px; }
     .monogram { width: 118px; height: 118px; font-size: 38px; border-radius: 20px; }
-    .about-grid, .sites, .stats-grid { grid-template-columns: 1fr; }
+    .about-grid, .sites, .repos { grid-template-columns: 1fr; }
     .metrics { grid-template-columns: repeat(2, 1fr); }
     .nav-links { display: none; }
   }
@@ -220,7 +230,8 @@
     <div class="brand"><span class="dot"></span>QianKunBoss</div>
     <div class="nav-links">
       <a href="#about">关于我</a>
-      <a href="#sites">项目站点</a>
+      <a href="#sites">站点导航</a>
+      <a href="#repos">开源项目</a>
       <a href="#stack">技术栈</a>
       <a href="#stats">GitHub 数据</a>
       <a href="https://github.com/QianKunBoss" target="_blank" rel="noopener">GitHub ↗</a>
@@ -241,9 +252,9 @@
         从数据库设计、权限模型，到交互动效，一个人走完全程。
       </p>
       <div class="hero-actions">
-        <a class="btn primary" href="#sites">▶ 进入项目站点</a>
+        <a class="btn primary" href="#sites">▶ 进入站点导航</a>
+        <a class="btn" href="https://csms.tianrld.top/" target="_blank" rel="noopener">CSMS 在线体验</a>
         <a class="btn" href="https://github.com/QianKunBoss" target="_blank" rel="noopener">GitHub 主页</a>
-        <a class="btn" href="https://github.com/QianKunBoss/ClassScoreManageSystem" target="_blank" rel="noopener">★ CSMS 源码</a>
       </div>
     </div>
     <div class="monogram">QK</div>
@@ -251,20 +262,21 @@
 
   <!-- ██ 指标条 ██ -->
   <div class="metrics">
-    <div class="metric"><b>22</b><span>API 接口</span></div>
-    <div class="metric"><b>8</b><span>数据表</span></div>
-    <div class="metric"><b>4</b><span>级权限体系</span></div>
+    <div class="metric"><b>21</b><span>公开仓库</span></div>
+    <div class="metric"><b>13</b><span>获星总数</span></div>
+    <div class="metric"><b>10</b><span>在线站点</span></div>
     <div class="metric"><b>37</b><span>MCP 工具</span></div>
   </div>
 
   <!-- ██ 关于我 ██ -->
   <section id="about" class="reveal">
     <div class="sec-head"><span class="sec-no">01 /</span><h2>关于我</h2><span class="rule"></span></div>
+    <div class="sec-sub">一个喜欢把想法落成系统的全栈开发者 —— 一个人也能从数据库设计一路做到交互动效。</div>
     <div class="about-grid">
       <div class="about-card">
         <h3>🏫 校园数字化</h3>
         <ul>
-          <li>主导 CSMS 班级操行积分管理系统</li>
+          <li>主导 CSMS 班级积分管理系统</li>
           <li>多租户架构，每校独立 SQLite 库</li>
           <li>超管 / 校管 / 年级 / 班级 四级权限</li>
           <li>排行榜 · 积分记录 · 座位布局 · 统计筛选</li>
@@ -275,8 +287,8 @@
         <ul>
           <li>Minecraft Fabric 模组 MCP 服务端</li>
           <li>37 个工具，覆盖 18 个游戏版本</li>
-          <li>zmusic 音乐系统 / VoiceHub 点歌站</li>
-          <li>让 AI Agent 直接接管服务器运维</li>
+          <li>zmusic 音乐系统：歌词 / 歌单 / 多平台</li>
+          <li>让 AI Agent 直接接管 Minecraft 服务器运维</li>
         </ul>
       </div>
       <div class="about-card">
@@ -291,93 +303,187 @@
     </div>
   </section>
 
-  <!-- ██ 项目站点 ██ -->
+  <!-- ██ 站点导航 ██ -->
   <section id="sites" class="reveal">
-    <div class="sec-head"><span class="sec-no">02 /</span><h2>项目站点</h2><span class="rule"></span></div>
+    <div class="sec-head"><span class="sec-no">02 /</span><h2>站点导航</h2><span class="rule"></span></div>
+    <div class="sec-sub">我自己部署并维护的一整套服务，点一下直达 —— 全部在 tianrld.top 域下。</div>
     <div class="sites">
 
-      <div class="site">
-        <div class="site-top">
-          <div class="site-icon">🎯</div>
-          <span class="status live">● LIVE</span>
-        </div>
-        <h3>CSMS · 班级操行积分管理系统</h3>
-        <div class="slug">/class-score-manage-system</div>
-        <p>校园操行积分的完整解决方案：多租户隔离、四级权限、排行统计与封禁管理。</p>
+      <article class="site">
+        <div class="site-top"><div class="site-icon">🎯</div><span class="status live">● LIVE</span></div>
+        <h3>CSMS · 班级积分管理系统</h3>
+        <div class="slug">csms.tianrld.top</div>
+        <p>面向各级学校的班级积分管理系统：多校分级管理、实时积分追踪、可视化座位表。</p>
         <div class="chips"><span class="chip">Nuxt 4</span><span class="chip">Vue 3</span><span class="chip">TypeScript</span><span class="chip">Drizzle</span><span class="chip">SQLite</span></div>
         <div class="site-links">
-          <!-- TODO-SITE-CSMS：把 # 换成 CSMS 线上地址 -->
-          <a class="go" href="#">▶ 访问站点</a>
+          <a class="go" href="https://csms.tianrld.top/" target="_blank" rel="noopener">▶ 访问站点</a>
           <a href="https://github.com/QianKunBoss/ClassScoreManageSystem" target="_blank" rel="noopener">源码</a>
         </div>
-      </div>
+      </article>
 
-      <div class="site">
-        <div class="site-top">
-          <div class="site-icon">📮</div>
-          <span class="status todo">● 待补充地址</span>
-        </div>
-        <h3>MAIL · 自建邮箱站点</h3>
-        <div class="slug">/cloud-mail</div>
-        <p>基于 Cloudflare 的临时邮箱与收发一体服务，零服务器成本，开箱即用。</p>
-        <div class="chips"><span class="chip">Cloudflare Workers</span><span class="chip">D1</span><span class="chip">JavaScript</span></div>
+      <article class="site">
+        <div class="site-top"><div class="site-icon">📚</div><span class="status live">● LIVE</span></div>
+        <h3>CSMS 文档</h3>
+        <div class="slug">docs.csms.tianrld.top</div>
+        <p>CSMS 官方文档站，覆盖部署、权限体系、数据模型与外部开放 API v1。</p>
+        <div class="chips"><span class="chip">快速上手</span><span class="chip">使用指南</span><span class="chip">API 参考</span><span class="chip">更新日志</span></div>
         <div class="site-links">
-          <!-- TODO-SITE-MAIL：把 # 换成邮箱站线上地址 -->
-          <a class="go" href="#">▶ 访问站点</a>
-          <a href="https://github.com/QianKunBoss/cloud-mail" target="_blank" rel="noopener">源码</a>
-        </div>
-      </div>
-
-      <div class="site">
-        <div class="site-top">
-          <div class="site-icon">📡</div>
-          <span class="status todo">● 预留位</span>
-        </div>
-        <h3>STATE · 设备状态监测站</h3>
-        <div class="slug">/state</div>
-        <p>实时采集设备在线状态、负载与运行指标，异常自动告警。</p>
-        <div class="chips"><span class="chip">Realtime</span><span class="chip">Dashboard</span><span class="chip">Monitoring</span></div>
-        <div class="site-links">
-          <!-- TODO-SITE-STATE：确定地址与仓库后替换 -->
-          <a class="go" href="#">▶ 访问站点</a>
-          <a href="#">仓库</a>
-        </div>
-      </div>
-
-      <div class="site">
-        <div class="site-top">
-          <div class="site-icon">📚</div>
-          <span class="status todo">● 待补充地址</span>
-        </div>
-        <h3>DOCS · CSMS 文档站</h3>
-        <div class="slug">/csms-docs-next</div>
-        <p>CSMS 的部署指南、API 手册与二次开发文档，跟随主库迭代更新。</p>
-        <div class="chips"><span class="chip">TypeScript</span><span class="chip">Nuxt Content</span><span class="chip">Docs</span></div>
-        <div class="site-links">
-          <!-- TODO-SITE-DOCS：把 # 换成文档站线上地址 -->
-          <a class="go" href="#">▶ 访问站点</a>
+          <a class="go" href="https://docs.csms.tianrld.top/" target="_blank" rel="noopener">▶ 访问站点</a>
           <a href="https://github.com/QianKunBoss/CSMS-docs-next" target="_blank" rel="noopener">源码</a>
         </div>
-      </div>
+      </article>
 
-      <div class="site reserved">
-        <div class="site-top">
-          <div class="site-icon">＋</div>
-          <span class="status todo">● 预留位</span>
+      <article class="site">
+        <div class="site-top"><div class="site-icon">📡</div><span class="status live">● LIVE</span></div>
+        <h3>设备状态监测</h3>
+        <div class="slug">state.tianrld.top</div>
+        <p>实时采集各设备的在线状态、负载与运行指标，异常自动告警。</p>
+        <div class="chips"><span class="chip">实时采集</span><span class="chip">状态面板</span><span class="chip">运行指标</span><span class="chip">异常告警</span></div>
+        <div class="site-links">
+          <a class="go" href="https://state.tianrld.top/" target="_blank" rel="noopener">▶ 访问站点</a>
         </div>
+      </article>
+
+      <article class="site">
+        <div class="site-top"><div class="site-icon">📮</div><span class="status live">● LIVE</span></div>
+        <h3>Cloud Mail · 自建邮箱</h3>
+        <div class="slug">mail.tianrld.top</div>
+        <p>基于 Cloudflare 的自建邮箱服务，收发一体、可安装到桌面，零服务器成本。</p>
+        <div class="chips"><span class="chip">Cloudflare Workers</span><span class="chip">D1</span><span class="chip">PWA</span></div>
+        <div class="site-links">
+          <a class="go" href="https://mail.tianrld.top/" target="_blank" rel="noopener">▶ 访问站点</a>
+          <a href="https://github.com/QianKunBoss/cloud-mail" target="_blank" rel="noopener">源码</a>
+        </div>
+      </article>
+
+      <article class="site">
+        <div class="site-top"><div class="site-icon">🌐</div><span class="status live">● LIVE</span></div>
+        <h3>Tianrld 二级域名分发系统</h3>
+        <div class="slug">dns.tianrld.top</div>
+        <p>面向多用户的二级域名分发与解析管理平台，支持 A / AAAA / CNAME / MX / TXT 等记录。</p>
+        <div class="chips"><span class="chip">DNS 解析</span><span class="chip">二级域名分发</span><span class="chip">多用户</span></div>
+        <div class="site-links">
+          <a class="go" href="https://dns.tianrld.top/" target="_blank" rel="noopener">▶ 访问站点</a>
+        </div>
+      </article>
+
+      <article class="site">
+        <div class="site-top"><div class="site-icon">🔗</div><span class="status live">● LIVE</span></div>
+        <h3>短网址生成</h3>
+        <div class="slug">short-url.tianrld.top</div>
+        <p>把长链接压缩成短链，支持自定义 Slug，默认随机生成短 id。</p>
+        <div class="chips"><span class="chip">自定义 Slug</span><span class="chip">一键生成</span><span class="chip">短链跳转</span></div>
+        <div class="site-links">
+          <a class="go" href="https://short-url.tianrld.top/" target="_blank" rel="noopener">▶ 访问站点</a>
+          <a href="https://github.com/QianKunBoss/short-url" target="_blank" rel="noopener">源码</a>
+        </div>
+      </article>
+
+      <article class="site">
+        <div class="site-top"><div class="site-icon">🎬</div><span class="status live">● LIVE</span></div>
+        <h3>在线视频搜索与观看</h3>
+        <div class="slug">tv.tianrld.top</div>
+        <p>多资源站聚合搜索与在线观看平台，一个入口搜遍多源影视资源。</p>
+        <div class="chips"><span class="chip">聚合搜索</span><span class="chip">多源影视</span><span class="chip">在线播放</span></div>
+        <div class="site-links">
+          <a class="go" href="https://tv.tianrld.top/" target="_blank" rel="noopener">▶ 访问站点</a>
+        </div>
+      </article>
+
+      <article class="site">
+        <div class="site-top"><div class="site-icon">📺</div><span class="status live">● LIVE</span></div>
+        <h3>在线视频 · 备用线路</h3>
+        <div class="slug">tv2.tianrld.top</div>
+        <p>LibreTV 版观影站，作为主站之外的备用线路，主站抽风时切过来。</p>
+        <div class="chips"><span class="chip">LibreTV</span><span class="chip">备用线路</span><span class="chip">多源影视</span></div>
+        <div class="site-links">
+          <a class="go" href="https://tv2.tianrld.top/" target="_blank" rel="noopener">▶ 访问站点</a>
+        </div>
+      </article>
+
+      <article class="site">
+        <div class="site-top"><div class="site-icon">🎵</div><span class="status live">● LIVE</span></div>
+        <h3>音乐解锁</h3>
+        <div class="slug">um.tianrld.top</div>
+        <p>解锁加密音乐文件并转换为通用格式，全程在浏览器内完成，不上传任何文件。</p>
+        <div class="chips"><span class="chip">歌曲解锁</span><span class="chip">格式转换</span><span class="chip">浏览器内处理</span></div>
+        <div class="site-links">
+          <a class="go" href="https://um.tianrld.top/" target="_blank" rel="noopener">▶ 访问站点</a>
+        </div>
+      </article>
+
+      <article class="site">
+        <div class="site-top"><div class="site-icon">⚡</div><span class="status live">● LIVE</span></div>
+        <h3>GitHub 文件加速</h3>
+        <div class="slug">github.tianrld.top</div>
+        <p>GitHub 文件下载加速代理，支持 release / archive / 单文件，文件走 JsDelivr。</p>
+        <div class="chips"><span class="chip">CF 加速</span><span class="chip">JsDelivr</span><span class="chip">下载代理</span></div>
+        <div class="site-links">
+          <a class="go" href="https://github.tianrld.top/" target="_blank" rel="noopener">▶ 访问站点</a>
+        </div>
+      </article>
+
+      <article class="site reserved">
+        <div class="site-top"><div class="site-icon">＋</div><span class="status todo">● 预留位</span></div>
         <h3>下一个站点</h3>
         <div class="slug">/coming-soon</div>
-        <p>网盘 / 博客 / 控制面板 / 监控大屏 …… 复制本卡片即可扩展，风格自动统一。</p>
+        <p>网盘 / 博客 / 控制面板 / 监控大屏 …… 复制任意一张卡片即可扩展，风格自动统一。</p>
         <div class="chips"><span class="chip">TBD</span></div>
-        <div class="site-links"><a href="#">▶ 待上线</a></div>
-      </div>
+        <div class="site-links"><a href="#sites">▶ 待上线</a></div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ██ 开源项目 ██ -->
+  <section id="repos" class="reveal">
+    <div class="sec-head"><span class="sec-no">03 /</span><h2>精选开源项目</h2><span class="rule"></span></div>
+    <div class="sec-sub">全部在 <a href="https://github.com/QianKunBoss?tab=repositories" target="_blank" rel="noopener">github.com/QianKunBoss</a> 开源。</div>
+    <div class="repos">
+
+      <article class="repo">
+        <h3>🎯 ClassScoreManageSystem</h3>
+        <div class="chips"><span class="chip">Nuxt 4</span><span class="chip">Vue 3</span><span class="chip">TypeScript</span><span class="chip">Drizzle</span><span class="chip">SQLite</span></div>
+        <p>班级操行积分管理系统。多租户物理隔离、四级权限体系、22 个 API / 8 张表，含 PWA 与开放 API v1。</p>
+        <div class="links">
+          <a class="btn" href="https://github.com/QianKunBoss/ClassScoreManageSystem" target="_blank" rel="noopener">查看仓库</a>
+        </div>
+      </article>
+
+      <article class="repo">
+        <h3>⛏️ Minecraft-MCPServer</h3>
+        <div class="chips"><span class="chip">Java</span><span class="chip">Fabric</span><span class="chip">MCP</span><span class="chip">HTTP/HTTPS</span></div>
+        <p>Minecraft Fabric 模组的 MCP 服务端。通过 HTTP/HTTPS 为 AI 代理提供服务器监控、命令执行、性能分析等 37 个工具，支持 1.20.1 ~ 1.21.11 共 18 个版本。</p>
+        <div class="links">
+          <a class="btn" href="https://github.com/QianKunBoss/Minecraft-MCPServer" target="_blank" rel="noopener">查看仓库</a>
+        </div>
+      </article>
+
+      <article class="repo">
+        <h3>🤖 ClassScoreManageSystem-koishi-plugin</h3>
+        <div class="chips"><span class="chip">TypeScript</span><span class="chip">Koishi</span><span class="chip">QQ</span></div>
+        <p>让 CSMS 与 QQ 通联的 Koishi 插件，把积分查询与操作搬进群聊。</p>
+        <div class="links">
+          <a class="btn" href="https://github.com/QianKunBoss/ClassScoreManageSystem-koishi-plugin" target="_blank" rel="noopener">查看仓库</a>
+        </div>
+      </article>
+
+      <article class="repo">
+        <h3>📚 CSMS-docs-next</h3>
+        <div class="chips"><span class="chip">TypeScript</span><span class="chip">Markdown</span><span class="chip">文档站</span></div>
+        <p>CSMS 官方文档站源码，跟随主库迭代，含部署指南、数据模型与 API 参考。</p>
+        <div class="links">
+          <a class="btn" href="https://github.com/QianKunBoss/CSMS-docs-next" target="_blank" rel="noopener">查看仓库</a>
+        </div>
+      </article>
 
     </div>
   </section>
 
   <!-- ██ 技术栈 ██ -->
   <section id="stack" class="reveal">
-    <div class="sec-head"><span class="sec-no">03 /</span><h2>技术栈</h2><span class="rule"></span></div>
+    <div class="sec-head"><span class="sec-no">04 /</span><h2>技术栈</h2><span class="rule"></span></div>
+    <div class="sec-sub">日常主力是 Vue 生态，但该用 Java / Python 的时候也照上。</div>
 
     <div class="stack-group">
       <div class="stack-label">FRONTEND</div>
@@ -391,7 +497,7 @@
       <div class="stack-label">BACKEND &amp; DATA</div>
       <div class="stack">
         <span class="tech"><i></i>Node.js</span><span class="tech"><i></i>Nitro</span><span class="tech"><i></i>Drizzle ORM</span>
-        <span class="tech"><i></i>SQLite / libsql</span><span class="tech"><i></i>MySQL</span><span class="tech"><i></i>Java (Fabric)</span>
+        <span class="tech"><i></i>SQLite / libsql</span><span class="tech"><i></i>MySQL</span><span class="tech"><i></i>D1</span><span class="tech"><i></i>Java (Fabric)</span>
       </div>
     </div>
 
@@ -406,19 +512,17 @@
 
   <!-- ██ GitHub 数据 ██ -->
   <section id="stats" class="reveal">
-    <div class="sec-head"><span class="sec-no">04 /</span><h2>GitHub 数据</h2><span class="rule"></span></div>
-    <div class="stats-grid">
+    <div class="sec-head"><span class="sec-no">05 /</span><h2>GitHub 数据</h2><span class="rule"></span></div>
+    <div class="sec-sub">前两张卡片由 scripts/gen-stats.mjs 直连 GitHub API 自绘，每日自动刷新，不依赖任何第三方图床。</div>
+    <div class="stats-stack">
+      <div class="panel"><img src="assets/stats.svg" alt="GitHub Stats" /></div>
+      <div class="panel"><img src="assets/languages.svg" alt="Most Used Languages" /></div>
+      <div class="panel"><img src="https://ghchart.rshah.org/58A6FF/QianKunBoss" alt="Contribution Graph" loading="lazy" /></div>
       <div class="panel">
-        <img src="https://github-readme-stats.vercel.app/api?username=QianKunBoss&show_icons=true&hide_border=true&theme=tokyonight&bg_color=0B1F33&title_color=58A6FF&icon_color=7DF9FF&text_color=C9D1D9" alt="GitHub Stats" loading="lazy" />
-      </div>
-      <div class="panel">
-        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=QianKunBoss&layout=compact&langs_count=8&hide_border=true&theme=tokyonight&bg_color=0B1F33&title_color=58A6FF&text_color=C9D1D9" alt="Top Languages" loading="lazy" />
-      </div>
-      <div class="panel" style="grid-column:1 / -1">
-        <img src="https://github-readme-activity-graph.vercel.app/graph?username=QianKunBoss&theme=tokyo-night&hide_border=true&bg_color=0B1F33&color=58A6FF&line=7DF9FF&point=FFFFFF" alt="Activity Graph" loading="lazy" />
+        <img src="https://raw.githubusercontent.com/QianKunBoss/QianKunBoss/output/github-contribution-grid-snake-dark.svg" alt="Contribution Snake" loading="lazy" />
       </div>
     </div>
-    <p class="stat-fallback">※ 以上图表由第三方服务实时渲染，离线环境下不显示属正常现象。</p>
+    <p class="stat-fallback">※ 后两张图需要网络访问（贡献热图与蛇形图）。蛇形图需先跑一次 Actions 才会生成。</p>
   </section>
 
 </div>
@@ -428,11 +532,13 @@
     <div class="quote">“ 把复杂的问题，拆成清晰的模块。 ”</div>
     <div class="footer-links">
       <a href="https://github.com/QianKunBoss" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://github.com/QianKunBoss?tab=repositories" target="_blank" rel="noopener">全部项目</a>
+      <a href="https://github.com/QianKunBoss?tab=repositories" target="_blank" rel="noopener">全部仓库</a>
+      <a href="https://csms.tianrld.top/" target="_blank" rel="noopener">CSMS</a>
+      <a href="https://docs.csms.tianrld.top/" target="_blank" rel="noopener">文档</a>
       <!-- TODO-MAIL：替换为你的邮箱 -->
       <a href="mailto:your-mail@example.com">Email</a>
     </div>
-    <div class="meta">© 2026 QianKunBoss · Built with 宇宙科技风 · 钢蓝色系</div>
+    <div class="meta">© 2026 QianKunBoss · 宇宙科技风 · 钢蓝色系</div>
   </div>
 </footer>
 

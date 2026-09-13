@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="150" viewBox="0 0 1200 150" role="img" aria-label="footer">
+  <defs>
+    <pattern id="fgrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12263F" stroke-width="1"/>
+    </pattern>
+    <filter id="fsoft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="52"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="150" fill="#060D16"/>
+  <rect width="1200" height="150" fill="url(#fgrid)"/>
+  <circle cx="600" cy="150" r="150" fill="#1F6FEB" opacity="0.28" filter="url(#fsoft)"/>
+
+  <!-- 波浪 -->
+  <path d="M0 44 C 260 4, 520 76, 780 40 C 960 16, 1080 52, 1200 34 L1200 150 L0 150 Z"
+        fill="#0B1F33" opacity="0.9"/>
+  <path d="M0 62 C 260 24, 520 96, 780 58 C 960 34, 1080 72, 1200 54"
+        fill="none" stroke="#1F6FEB" stroke-width="1.5" opacity="0.55"/>
+
+  <text x="600" y="102" text-anchor="middle"
+        font-family="ui-monospace,SFMono-Regular,Consolas,monospace"
+        font-size="13" letter-spacing="3.4" fill="#58A6FF">THANKS FOR VISITING</text>
+  <text x="600" y="126" text-anchor="middle"
+        font-family="'Segoe UI',-apple-system,BlinkMacSystemFont,'Microsoft YaHei',sans-serif"
+        font-size="12.5" fill="#5A6E82">把复杂的问题，拆成清晰的模块</text>
+</svg>
