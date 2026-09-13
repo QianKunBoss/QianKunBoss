@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>QianKunBoss · 用代码把想法变成系统</title>
+<meta name="description" content="QianKunBoss —— Vue.js / Node.js 全栈开发者。CSMS 班级操行积分管理系统、自建邮箱站、设备状态监测站等项目的统一入口。" />
+<!--
+  视觉规范：宇宙科技风 · 钢蓝色系
+  本页面为纯色实现，未使用任何 CSS 渐变（linear-gradient / radial-gradient）。
+  网格背景与发光效果分别由 SVG Pattern 与 box-shadow 实现。
+  TODO-SITE-* 处的 href="#" 待替换为真实线上地址。
+-->
+<style>
+  :root {
+    --bg:        #060D16;
+    --bg-2:      #0A1626;
+    --panel:     #0B1F33;
+    --panel-2:   #0E2840;
+    --line:      #16304D;
+    --line-soft: #122741;
+    --blue:      #1F6FEB;
+    --blue-2:    #2C9CDF;
+    --blue-3:    #58A6FF;
+    --cyan:      #7DF9FF;
+    --text:      #C9D1D9;
+    --text-dim:  #8397AC;
+    --text-mute: #5A6E82;
+    --mono: "JetBrains Mono", "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+
+  body {
+    background-color: var(--bg);
+    /* 网格背景：SVG Pattern 实现，非 CSS 渐变 */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52'%3E%3Cpath d='M52 0H0V52' fill='none' stroke='%2312263F' stroke-width='1'/%3E%3C/svg%3E");
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  a { color: var(--blue-3); text-decoration: none; }
+  a:hover { color: var(--cyan); }
+
+  /* ── 背景光斑（纯色 + 模糊，非渐变） ───────────────────── */
+  .orb { position: fixed; border-radius: 50%; filter: blur(90px); opacity: .18; pointer-events: none; z-index: 0; }
+  .orb-1 { width: 460px; height: 460px; background: var(--blue);  top: -160px; left: -120px; }
+  .orb-2 { width: 380px; height: 380px; background: var(--cyan);  top: 420px;  right: -140px; opacity: .10; }
+  .orb-3 { width: 420px; height: 420px; background: var(--blue-2); bottom: -160px; left: 32%; opacity: .08; }
+
+  .wrap { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── 顶部导航 ───────────────────────────────────────── */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(6, 13, 22, .82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-weight: 700; letter-spacing: .06em; color: #fff; }
+  .brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); animation: pulse 2.2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  .nav-links { display: flex; gap: 26px; font-family: var(--mono); font-size: 13px; letter-spacing: .04em; }
+  .nav-links a { color: var(--text-dim); }
+  .nav-links a:hover { color: var(--cyan); }
+
+  /* ── Hero ───────────────────────────────────────────── */
+  .hero { padding: 92px 0 72px; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .1em;
+    color: var(--cyan); border: 1px solid var(--line);
+    background: var(--panel); border-radius: 999px; padding: 5px 14px; margin-bottom: 22px;
+  }
+  h1 { font-size: clamp(38px, 6vw, 62px); line-height: 1.08; letter-spacing: -.02em; color: #fff; font-weight: 800; }
+  h1 .accent { color: var(--blue-3); text-shadow: 0 0 26px rgba(88,166,255,.45); }
+  .typed-line { margin-top: 20px; font-family: var(--mono); font-size: 16px; color: var(--blue-3); min-height: 26px; }
+  .caret { display: inline-block; width: 9px; height: 18px; background: var(--cyan); vertical-align: -3px; margin-left: 2px; animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hero-desc { margin-top: 22px; max-width: 560px; color: var(--text-dim); }
+  .hero-actions { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 13px; letter-spacing: .04em;
+    padding: 11px 22px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--panel); color: var(--text); transition: .18s ease;
+  }
+  .btn:hover { border-color: var(--blue-3); color: #fff; box-shadow: 0 0 0 1px var(--blue-3), 0 0 22px rgba(88,166,255,.28); transform: translateY(-1px); }
+  .btn.primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .btn.primary:hover { background: var(--blue-2); border-color: var(--blue-2); box-shadow: 0 0 26px rgba(44,156,223,.45); }
+
+  /* 头像 / 身份标识 */
+  .monogram {
+    width: 172px; height: 172px; border-radius: 26px;
+    background: var(--panel); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 54px; font-weight: 800; color: var(--blue-3);
+    box-shadow: 0 0 0 1px rgba(88,166,255,.18), 0 0 60px rgba(31,111,235,.32), inset 0 0 40px rgba(31,111,235,.14);
+    position: relative;
+  }
+  .monogram::after {
+    content: "● ONLINE"; position: absolute; bottom: -11px; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: 10px; letter-spacing: .14em; color: var(--cyan);
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; white-space: nowrap;
+  }
+
+  /* ── 指标条 ─────────────────────────────────────────── */
+  .metrics {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line-soft); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 88px;
+  }
+  .metric { background: var(--bg-2); padding: 22px 18px; text-align: center; }
+  .metric b { display: block; font-family: var(--mono); font-size: 26px; color: var(--blue-3); }
+  .metric span { font-size: 12px; color: var(--text-mute); letter-spacing: .08em; }
+
+  /* ── 通用区块 ───────────────────────────────────────── */
+  section { padding: 22px 0 78px; }
+  .sec-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 34px; }
+  .sec-no { font-family: var(--mono); font-size: 12px; color: var(--text-mute); letter-spacing: .14em; }
+  h2 { font-size: 26px; color: #fff; font-weight: 700; letter-spacing: -.01em; }
+  .sec-head .rule { flex: 1; height: 1px; background: var(--line); }
+
+  /* 关于我 */
+  .about-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .about-card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 24px; transition: .2s ease; }
+  .about-card:hover { border-color: var(--blue); box-shadow: 0 0 26px rgba(31,111,235,.22); transform: translateY(-3px); }
+  .about-card h3 { font-size: 15px; color: var(--cyan); font-family: var(--mono); margin-bottom: 14px; letter-spacing: .04em; }
+  .about-card ul { list-style: none; }
+  .about-card li { position: relative; padding-left: 18px; font-size: 13.5px; color: var(--text-dim); margin-bottom: 9px; }
+  .about-card li::before { content: "▸"; position: absolute; left: 0; color: var(--blue-2); }
+
+  /* 项目站点卡片 */
+  .sites { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .site {
+    position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    padding: 26px; transition: .22s ease; overflow: hidden;
+  }
+  .site::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2px; background: var(--blue); opacity: 0; transition: .22s ease; }
+  .site:hover { border-color: var(--blue); box-shadow: 0 10px 40px rgba(31,111,235,.22); transform: translateY(-4px); }
+  .site:hover::before { opacity: 1; }
+  .site-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .site-icon {
+    width: 42px; height: 42px; border-radius: 10px; background: var(--panel-2); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; font-size: 19px;
+  }
+  .status { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; padding: 3px 9px; border-radius: 999px; border: 1px solid; }
+  .status.live { color: var(--cyan); border-color: rgba(125,249,255,.35); background: rgba(125,249,255,.07); }
+  .status.todo { color: var(--text-mute); border-color: var(--line); }
+  .site h3 { font-size: 18px; color: #fff; margin-bottom: 6px; }
+  .site .slug { font-family: var(--mono); font-size: 12px; color: var(--text-mute); margin-bottom: 12px; }
+  .site p { font-size: 13.5px; color: var(--text-dim); margin-bottom: 16px; min-height: 44px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+  .chip { font-family: var(--mono); font-size: 11px; color: var(--blue-3); background: var(--panel-2); border: 1px solid var(--line); border-radius: 5px; padding: 3px 9px; }
+  .site-links { display: flex; gap: 10px; }
+  .site-links a { font-family: var(--mono); font-size: 12.5px; padding: 8px 16px; border-radius: 7px; border: 1px solid var(--line); background: var(--bg-2); color: var(--text-dim); }
+  .site-links a:hover { border-color: var(--blue-3); color: #fff; }
+  .site-links a.go { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .site-links a.go:hover { background: var(--blue-2); border-color: var(--blue-2); }
+
+  /* 预留位 */
+  .site.reserved { border-style: dashed; border-color: var(--line-soft); background: rgba(10,22,38,.5); }
+  .site.reserved h3, .site.reserved p { color: var(--text-mute); }
+  .site.reserved .site-icon { border-style: dashed; color: var(--text-mute); }
+
+  /* 技术栈 */
+  .stack-group { margin-bottom: 26px; }
+  .stack-label { font-family: var(--mono); font-size: 12px; color: var(--text-mute); letter-spacing: .12em; margin-bottom: 12px; }
+  .stack { display: flex; flex-wrap: wrap; gap: 9px; }
+  .tech {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 13px; color: var(--text); background: var(--panel); border: 1px solid var(--line);
+    border-radius: 7px; padding: 7px 14px; transition: .16s ease;
+  }
+  .tech:hover { border-color: var(--blue-3); box-shadow: 0 0 18px rgba(88,166,255,.2); transform: translateY(-2px); }
+  .tech i { width: 7px; height: 7px; border-radius: 50%; background: var(--blue-3); }
+
+  /* 数据区 */
+  .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px; }
+  .panel img { display: block; width: 100%; border-radius: 8px; }
+  .stat-fallback { font-family: var(--mono); font-size: 12px; color: var(--text-mute); padding: 14px; }
+
+  /* 页脚 */
+  footer { border-top: 1px solid var(--line); padding: 46px 0 60px; margin-top: 30px; text-align: center; }
+  footer .quote { font-family: var(--mono); font-size: 14px; color: var(--blue-3); margin-bottom: 18px; }
+  footer .meta { font-family: var(--mono); font-size: 12px; color: var(--text-mute); }
+  .footer-links { display: flex; justify-content: center; gap: 22px; margin: 20px 0; font-family: var(--mono); font-size: 13px; }
+
+  /* 滚动出现动画 */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.on { opacity: 1; transform: none; }
+
+  /* 响应式 */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 32px; padding: 60px 0 48px; }
+    .monogram { width: 118px; height: 118px; font-size: 38px; border-radius: 20px; }
+    .about-grid, .sites, .stats-grid { grid-template-columns: 1fr; }
+    .metrics { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<header>
+  <nav class="nav">
+    <div class="brand"><span class="dot"></span>QianKunBoss</div>
+    <div class="nav-links">
+      <a href="#about">关于我</a>
+      <a href="#sites">项目站点</a>
+      <a href="#stack">技术栈</a>
+      <a href="#stats">GitHub 数据</a>
+      <a href="https://github.com/QianKunBoss" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </nav>
+</header>
+
+<div class="wrap">
+
+  <!-- ██ Hero ██ -->
+  <section class="hero" id="home">
+    <div>
+      <div class="tag">◆ FULL-STACK DEVELOPER · VUE / NODE</div>
+      <h1>用代码把想法<br /><span class="accent">变成系统</span></h1>
+      <div class="typed-line"><span id="typed"></span><span class="caret"></span></div>
+      <p class="hero-desc">
+        独立开发者，专注校园数字化系统与 Minecraft 工具链。<br />
+        从数据库设计、权限模型，到交互动效，一个人走完全程。
+      </p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#sites">▶ 进入项目站点</a>
+        <a class="btn" href="https://github.com/QianKunBoss" target="_blank" rel="noopener">GitHub 主页</a>
+        <a class="btn" href="https://github.com/QianKunBoss/ClassScoreManageSystem" target="_blank" rel="noopener">★ CSMS 源码</a>
+      </div>
+    </div>
+    <div class="monogram">QK</div>
+  </section>
+
+  <!-- ██ 指标条 ██ -->
+  <div class="metrics">
+    <div class="metric"><b>22</b><span>API 接口</span></div>
+    <div class="metric"><b>8</b><span>数据表</span></div>
+    <div class="metric"><b>4</b><span>级权限体系</span></div>
+    <div class="metric"><b>37</b><span>MCP 工具</span></div>
+  </div>
+
+  <!-- ██ 关于我 ██ -->
+  <section id="about" class="reveal">
+    <div class="sec-head"><span class="sec-no">01 /</span><h2>关于我</h2><span class="rule"></span></div>
+    <div class="about-grid">
+      <div class="about-card">
+        <h3>🏫 校园数字化</h3>
+        <ul>
+          <li>主导 CSMS 班级操行积分管理系统</li>
+          <li>多租户架构，每校独立 SQLite 库</li>
+          <li>超管 / 校管 / 年级 / 班级 四级权限</li>
+          <li>排行榜 · 积分记录 · 座位布局 · 统计筛选</li>
+        </ul>
+      </div>
+      <div class="about-card">
+        <h3>🎮 游戏工具链</h3>
+        <ul>
+          <li>Minecraft Fabric 模组 MCP 服务端</li>
+          <li>37 个工具，覆盖 18 个游戏版本</li>
+          <li>zmusic 音乐系统 / VoiceHub 点歌站</li>
+          <li>让 AI Agent 直接接管服务器运维</li>
+        </ul>
+      </div>
+      <div class="about-card">
+        <h3>⚙️ 工程实践</h3>
+        <ul>
+          <li>Nuxt 4 + Vue 3 + TypeScript 全栈</li>
+          <li>Drizzle ORM · libsql · SQLite</li>
+          <li>Cloudflare Workers / Pages 自建服务</li>
+          <li>代码审计 · 安全分级修复 · 视觉规范统一</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ██ 项目站点 ██ -->
+  <section id="sites" class="reveal">
+    <div class="sec-head"><span class="sec-no">02 /</span><h2>项目站点</h2><span class="rule"></span></div>
+    <div class="sites">
+
+      <div class="site">
+        <div class="site-top">
+          <div class="site-icon">🎯</div>
+          <span class="status live">● LIVE</span>
+        </div>
+        <h3>CSMS · 班级操行积分管理系统</h3>
+        <div class="slug">/class-score-manage-system</div>
+        <p>校园操行积分的完整解决方案：多租户隔离、四级权限、排行统计与封禁管理。</p>
+        <div class="chips"><span class="chip">Nuxt 4</span><span class="chip">Vue 3</span><span class="chip">TypeScript</span><span class="chip">Drizzle</span><span class="chip">SQLite</span></div>
+        <div class="site-links">
+          <!-- TODO-SITE-CSMS：把 # 换成 CSMS 线上地址 -->
+          <a class="go" href="#">▶ 访问站点</a>
+          <a href="https://github.com/QianKunBoss/ClassScoreManageSystem" target="_blank" rel="noopener">源码</a>
+        </div>
+      </div>
+
+      <div class="site">
+        <div class="site-top">
+          <div class="site-icon">📮</div>
+          <span class="status todo">● 待补充地址</span>
+        </div>
+        <h3>MAIL · 自建邮箱站点</h3>
+        <div class="slug">/cloud-mail</div>
+        <p>基于 Cloudflare 的临时邮箱与收发一体服务，零服务器成本，开箱即用。</p>
+        <div class="chips"><span class="chip">Cloudflare Workers</span><span class="chip">D1</span><span class="chip">JavaScript</span></div>
+        <div class="site-links">
+          <!-- TODO-SITE-MAIL：把 # 换成邮箱站线上地址 -->
+          <a class="go" href="#">▶ 访问站点</a>
+          <a href="https://github.com/QianKunBoss/cloud-mail" target="_blank" rel="noopener">源码</a>
+        </div>
+      </div>
+
+      <div class="site">
+        <div class="site-top">
+          <div class="site-icon">📡</div>
+          <span class="status todo">● 预留位</span>
+        </div>
+        <h3>STATE · 设备状态监测站</h3>
+        <div class="slug">/state</div>
+        <p>实时采集设备在线状态、负载与运行指标，异常自动告警。</p>
+        <div class="chips"><span class="chip">Realtime</span><span class="chip">Dashboard</span><span class="chip">Monitoring</span></div>
+        <div class="site-links">
+          <!-- TODO-SITE-STATE：确定地址与仓库后替换 -->
+          <a class="go" href="#">▶ 访问站点</a>
+          <a href="#">仓库</a>
+        </div>
+      </div>
+
+      <div class="site">
+        <div class="site-top">
+          <div class="site-icon">📚</div>
+          <span class="status todo">● 待补充地址</span>
+        </div>
+        <h3>DOCS · CSMS 文档站</h3>
+        <div class="slug">/csms-docs-next</div>
+        <p>CSMS 的部署指南、API 手册与二次开发文档，跟随主库迭代更新。</p>
+        <div class="chips"><span class="chip">TypeScript</span><span class="chip">Nuxt Content</span><span class="chip">Docs</span></div>
+        <div class="site-links">
+          <!-- TODO-SITE-DOCS：把 # 换成文档站线上地址 -->
+          <a class="go" href="#">▶ 访问站点</a>
+          <a href="https://github.com/QianKunBoss/CSMS-docs-next" target="_blank" rel="noopener">源码</a>
+        </div>
+      </div>
+
+      <div class="site reserved">
+        <div class="site-top">
+          <div class="site-icon">＋</div>
+          <span class="status todo">● 预留位</span>
+        </div>
+        <h3>下一个站点</h3>
+        <div class="slug">/coming-soon</div>
+        <p>网盘 / 博客 / 控制面板 / 监控大屏 …… 复制本卡片即可扩展，风格自动统一。</p>
+        <div class="chips"><span class="chip">TBD</span></div>
+        <div class="site-links"><a href="#">▶ 待上线</a></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ██ 技术栈 ██ -->
+  <section id="stack" class="reveal">
+    <div class="sec-head"><span class="sec-no">03 /</span><h2>技术栈</h2><span class="rule"></span></div>
+
+    <div class="stack-group">
+      <div class="stack-label">FRONTEND</div>
+      <div class="stack">
+        <span class="tech"><i></i>Vue 3</span><span class="tech"><i></i>Nuxt 4</span><span class="tech"><i></i>TypeScript</span>
+        <span class="tech"><i></i>Tailwind CSS</span><span class="tech"><i></i>Vite</span><span class="tech"><i></i>HTML / CSS</span>
+      </div>
+    </div>
+
+    <div class="stack-group">
+      <div class="stack-label">BACKEND &amp; DATA</div>
+      <div class="stack">
+        <span class="tech"><i></i>Node.js</span><span class="tech"><i></i>Nitro</span><span class="tech"><i></i>Drizzle ORM</span>
+        <span class="tech"><i></i>SQLite / libsql</span><span class="tech"><i></i>MySQL</span><span class="tech"><i></i>Java (Fabric)</span>
+      </div>
+    </div>
+
+    <div class="stack-group">
+      <div class="stack-label">INFRA &amp; TOOLS</div>
+      <div class="stack">
+        <span class="tech"><i></i>Cloudflare Workers</span><span class="tech"><i></i>Docker</span><span class="tech"><i></i>Git / GitHub Actions</span>
+        <span class="tech"><i></i>Linux</span><span class="tech"><i></i>Nginx</span><span class="tech"><i></i>MCP</span><span class="tech"><i></i>Python</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ██ GitHub 数据 ██ -->
+  <section id="stats" class="reveal">
+    <div class="sec-head"><span class="sec-no">04 /</span><h2>GitHub 数据</h2><span class="rule"></span></div>
+    <div class="stats-grid">
+      <div class="panel">
+        <img src="https://github-readme-stats.vercel.app/api?username=QianKunBoss&show_icons=true&hide_border=true&theme=tokyonight&bg_color=0B1F33&title_color=58A6FF&icon_color=7DF9FF&text_color=C9D1D9" alt="GitHub Stats" loading="lazy" />
+      </div>
+      <div class="panel">
+        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=QianKunBoss&layout=compact&langs_count=8&hide_border=true&theme=tokyonight&bg_color=0B1F33&title_color=58A6FF&text_color=C9D1D9" alt="Top Languages" loading="lazy" />
+      </div>
+      <div class="panel" style="grid-column:1 / -1">
+        <img src="https://github-readme-activity-graph.vercel.app/graph?username=QianKunBoss&theme=tokyo-night&hide_border=true&bg_color=0B1F33&color=58A6FF&line=7DF9FF&point=FFFFFF" alt="Activity Graph" loading="lazy" />
+      </div>
+    </div>
+    <p class="stat-fallback">※ 以上图表由第三方服务实时渲染，离线环境下不显示属正常现象。</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="quote">“ 把复杂的问题，拆成清晰的模块。 ”</div>
+    <div class="footer-links">
+      <a href="https://github.com/QianKunBoss" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/QianKunBoss?tab=repositories" target="_blank" rel="noopener">全部项目</a>
+      <!-- TODO-MAIL：替换为你的邮箱 -->
+      <a href="mailto:your-mail@example.com">Email</a>
+    </div>
+    <div class="meta">© 2026 QianKunBoss · Built with 宇宙科技风 · 钢蓝色系</div>
+  </div>
+</footer>
+
+<script>
+  /* 打字机效果 */
+  (function () {
+    var lines = [
+      "Vue.js / Node.js 全栈开发者",
+      "校园数字化系统 · 多租户 · 四级权限",
+      "Minecraft 工具链 · AI Agent 基础设施",
+      "把复杂的问题，拆成清晰的模块"
+    ];
+    var el = document.getElementById("typed");
+    var li = 0, ci = 0, deleting = false;
+    function tick() {
+      var full = lines[li];
+      el.textContent = deleting ? full.slice(0, ci--) : full.slice(0, ci++);
+      var delay = deleting ? 38 : 82;
+      if (!deleting && ci > full.length) { deleting = true; delay = 1500; }
+      else if (deleting && ci < 0) { deleting = false; li = (li + 1) % lines.length; ci = 0; delay = 320; }
+      setTimeout(tick, delay);
+    }
+    tick();
+  })();
+
+  /* 滚动出现动画 */
+  (function () {
+    var els = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) {
+      els.forEach(function (e) { e.classList.add("on"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("on"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+</script>
+
+</body>
+</html>
