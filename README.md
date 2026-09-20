@@ -32,7 +32,7 @@
 
 <p>
   <a href="https://github.com/QianKunBoss"><img src="https://img.shields.io/badge/GitHub-1F6FEB?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
-  <a href="https://csms.tianrld.top/"><img src="https://img.shields.io/badge/CSMS-班级积分管理-2C9CDF?style=for-the-badge&logo=vuedotjs&logoColor=white" alt="CSMS" /></a>
+  <a href="https://csms.tianrld.top/"><img src="https://img.shields.io/badge/ClassFire-班级积分管理-2C9CDF?style=for-the-badge&logo=vuedotjs&logoColor=white" alt="ClassFire" /></a>
   <a href="https://docs.csms.tianrld.top/"><img src="https://img.shields.io/badge/文档-快速上手-58A6FF?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Docs" /></a>
   <!-- TODO-MAIL ↓ 替换为你的邮箱 -->
   <a href="mailto:your-mail@example.com"><img src="https://img.shields.io/badge/Email-4A90D9?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
@@ -43,8 +43,8 @@
        camo 每次访问都要回源，会间歇性裂图。自托管方案见 worker/views-counter.js -->
   <img src="https://api.visitorbadge.io/api/visitors?path=QianKunBoss.QianKunBoss&label=PROFILE%20VIEWS&labelColor=%230B1F33&countColor=%231F6FEB&style=for-the-badge" alt="Views" />
   <img src="https://img.shields.io/github/followers/QianKunBoss?style=for-the-badge&color=58A6FF&labelColor=0B1F33&label=Followers" alt="Followers" />
-  <img src="https://img.shields.io/github/stars/QianKunBoss/ClassScoreManageSystem?style=for-the-badge&color=7DF9FF&labelColor=0B1F33&label=CSMS+Stars" alt="Stars" />
-  <img src="https://img.shields.io/github/last-commit/QianKunBoss/ClassScoreManageSystem?style=for-the-badge&color=2C9CDF&labelColor=0B1F33&label=Last+Commit" alt="Last Commit" />
+  <img src="https://img.shields.io/github/stars/QianKunBoss/ClassFire?style=for-the-badge&color=7DF9FF&labelColor=0B1F33&label=ClassFire+Stars" alt="Stars" />
+  <img src="https://img.shields.io/github/last-commit/QianKunBoss/ClassFire?style=for-the-badge&color=2C9CDF&labelColor=0B1F33&label=Last+Commit" alt="Last Commit" />
 </p>
 
 </div>
@@ -65,7 +65,7 @@
 <td width="34%" valign="top">
 
 ### 🏫 校园数字化
-- 🧩 主导 **CSMS** 班级积分管理系统
+- 🧩 主导 **ClassFire** 班级积分管理系统
 - 🏗️ 多租户架构，每校独立 SQLite 库
 - 🔐 超管 / 校管 / 年级 / 班级 四级权限
 - 📊 排行榜 · 积分记录 · 座位布局 · 统计筛选
@@ -106,23 +106,23 @@
 <tr>
 <td width="50%" valign="top" align="center">
 
-### 🎯 CSMS · 班级积分管理系统
+### 🎯 ClassFire · 班级积分管理系统
 
 <code>Nuxt 4</code> <code>Vue 3</code> <code>TypeScript</code> <code>Drizzle</code> <code>SQLite</code>
 
 面向各级学校的班级积分管理系统：多校分级管理、实时积分追踪、可视化座位表。
 
 <a href="https://csms.tianrld.top/"><img src="https://img.shields.io/badge/访问站点-1F6FEB?style=for-the-badge&logo=googlechrome&logoColor=white" alt="访问" /></a>
-<a href="https://github.com/QianKunBoss/ClassScoreManageSystem"><img src="https://img.shields.io/badge/源码-181717?style=for-the-badge&logo=github&logoColor=white" alt="源码" /></a>
+<a href="https://github.com/QianKunBoss/ClassFire"><img src="https://img.shields.io/badge/源码-181717?style=for-the-badge&logo=github&logoColor=white" alt="源码" /></a>
 
 </td>
 <td width="50%" valign="top" align="center">
 
-### 📚 CSMS 文档
+### 📚 ClassFire 文档
 
 <code>快速上手</code> <code>使用指南</code> <code>API 参考</code> <code>更新日志</code>
 
-CSMS 官方文档站，覆盖部署、权限体系、数据模型与外部开放 API v1。
+ClassFire 官方文档站，覆盖部署、权限体系、数据模型与外部开放 API v1。
 
 <a href="https://docs.csms.tianrld.top/"><img src="https://img.shields.io/badge/访问站点-2C9CDF?style=for-the-badge&logo=readthedocs&logoColor=white" alt="访问" /></a>
 <a href="https://github.com/QianKunBoss/CSMS-docs-next"><img src="https://img.shields.io/badge/源码-181717?style=for-the-badge&logo=github&logoColor=white" alt="源码" /></a>
@@ -241,17 +241,17 @@ GitHub 文件下载加速代理，支持 release / archive / 单文件，文件�
 <tr>
 <td width="50%" valign="top" align="center">
 
-### 🎯 ClassScoreManageSystem
+### 🎯 ClassFire
 
 <code>Nuxt 4</code> <code>Vue 3</code> <code>TypeScript</code> <code>Drizzle</code> <code>SQLite</code>
 
 班级操行积分管理系统。多租户物理隔离、四级权限体系、22 个 API / 8 张表，含 PWA 与开放 API v1。
 
-<img src="https://img.shields.io/github/stars/QianKunBoss/ClassScoreManageSystem?style=flat-square&color=1F6FEB&labelColor=0B1F33&label=stars" alt="stars" />
-<img src="https://img.shields.io/github/forks/QianKunBoss/ClassScoreManageSystem?style=flat-square&color=58A6FF&labelColor=0B1F33&label=forks" alt="forks" />
-<img src="https://img.shields.io/github/license/QianKunBoss/ClassScoreManageSystem?style=flat-square&color=7DF9FF&labelColor=0B1F33" alt="license" />
+<img src="https://img.shields.io/github/stars/QianKunBoss/ClassFire?style=flat-square&color=1F6FEB&labelColor=0B1F33&label=stars" alt="stars" />
+<img src="https://img.shields.io/github/forks/QianKunBoss/ClassFire?style=flat-square&color=58A6FF&labelColor=0B1F33&label=forks" alt="forks" />
+<img src="https://img.shields.io/github/license/QianKunBoss/ClassFire?style=flat-square&color=7DF9FF&labelColor=0B1F33" alt="license" />
 
-<a href="https://github.com/QianKunBoss/ClassScoreManageSystem"><img src="https://img.shields.io/badge/查看仓库-1F6FEB?style=for-the-badge&logo=github&logoColor=white" alt="repo" /></a>
+<a href="https://github.com/QianKunBoss/ClassFire"><img src="https://img.shields.io/badge/查看仓库-1F6FEB?style=for-the-badge&logo=github&logoColor=white" alt="repo" /></a>
 
 </td>
 <td width="50%" valign="top" align="center">
@@ -276,7 +276,7 @@ Minecraft Fabric 模组的 MCP 服务端。通过 HTTP/HTTPS 为 AI 代理提供
 
 <code>TypeScript</code> <code>Koishi</code> <code>QQ</code>
 
-让 CSMS 与 QQ 通联的 Koishi 插件，把积分查询与操作搬进群聊。
+让 ClassFire 与 QQ 通联的 Koishi 插件，把积分查询与操作搬进群聊。
 
 <img src="https://img.shields.io/github/stars/QianKunBoss/ClassScoreManageSystem-koishi-plugin?style=flat-square&color=1F6FEB&labelColor=0B1F33&label=stars" alt="stars" />
 <img src="https://img.shields.io/github/license/QianKunBoss/ClassScoreManageSystem-koishi-plugin?style=flat-square&color=7DF9FF&labelColor=0B1F33" alt="license" />
@@ -290,7 +290,7 @@ Minecraft Fabric 模组的 MCP 服务端。通过 HTTP/HTTPS 为 AI 代理提供
 
 <code>TypeScript</code> <code>Markdown</code> <code>文档站</code>
 
-CSMS 官方文档站源码，跟随主库迭代，含部署指南、数据模型与 API 参考。
+ClassFire 官方文档站源码，跟随主库迭代，含部署指南、数据模型与 API 参考。
 
 <img src="https://img.shields.io/github/last-commit/QianKunBoss/CSMS-docs-next?style=flat-square&color=58A6FF&labelColor=0B1F33&label=last+commit" alt="commit" />
 
