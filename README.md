@@ -32,8 +32,8 @@
 
 <p>
   <a href="https://github.com/QianKunBoss"><img src="https://img.shields.io/badge/GitHub-1F6FEB?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
-  <a href="https://csms.tianrld.top/"><img src="https://img.shields.io/badge/ClassFire-班级积分管理-2C9CDF?style=for-the-badge&logo=vuedotjs&logoColor=white" alt="ClassFire" /></a>
-  <a href="https://docs.csms.tianrld.top/"><img src="https://img.shields.io/badge/文档-快速上手-58A6FF?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Docs" /></a>
+  <a href="https://ClassFire.tianrld.top/"><img src="https://img.shields.io/badge/ClassFire-班级积分管理-2C9CDF?style=for-the-badge&logo=vuedotjs&logoColor=white" alt="ClassFire" /></a>
+  <a href="https://docs.ClassFire.tianrld.top/"><img src="https://img.shields.io/badge/文档-快速上手-58A6FF?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Docs" /></a>
   <!-- TODO-MAIL ↓ 替换为你的邮箱 -->
   <a href="mailto:your-mail@example.com"><img src="https://img.shields.io/badge/Email-4A90D9?style=for-the-badge&logo=gmail&logoColor=white" alt="Email" /></a>
 </p>
@@ -112,7 +112,7 @@
 
 面向各级学校的班级积分管理系统：多校分级管理、实时积分追踪、可视化座位表。
 
-<a href="https://csms.tianrld.top/"><img src="https://img.shields.io/badge/访问站点-1F6FEB?style=for-the-badge&logo=googlechrome&logoColor=white" alt="访问" /></a>
+<a href="https://classfire.tianrld.top/"><img src="https://img.shields.io/badge/访问站点-1F6FEB?style=for-the-badge&logo=googlechrome&logoColor=white" alt="访问" /></a>
 <a href="https://github.com/QianKunBoss/ClassFire"><img src="https://img.shields.io/badge/源码-181717?style=for-the-badge&logo=github&logoColor=white" alt="源码" /></a>
 
 </td>
@@ -124,8 +124,8 @@
 
 ClassFire 官方文档站，覆盖部署、权限体系、数据模型与外部开放 API v1。
 
-<a href="https://docs.csms.tianrld.top/"><img src="https://img.shields.io/badge/访问站点-2C9CDF?style=for-the-badge&logo=readthedocs&logoColor=white" alt="访问" /></a>
-<a href="https://github.com/QianKunBoss/CSMS-docs-next"><img src="https://img.shields.io/badge/源码-181717?style=for-the-badge&logo=github&logoColor=white" alt="源码" /></a>
+<a href="https://docs.classfire.tianrld.top/"><img src="https://img.shields.io/badge/访问站点-2C9CDF?style=for-the-badge&logo=readthedocs&logoColor=white" alt="访问" /></a>
+<a href="https://github.com/QianKunBoss/ClassFire-docs-next"><img src="https://img.shields.io/badge/源码-181717?style=for-the-badge&logo=github&logoColor=white" alt="源码" /></a>
 
 </td>
 </tr>
@@ -286,15 +286,15 @@ Minecraft Fabric 模组的 MCP 服务端。通过 HTTP/HTTPS 为 AI 代理提供
 </td>
 <td width="50%" valign="top" align="center">
 
-### 📚 CSMS-docs-next
+### 📚 ClassFire-docs-next
 
 <code>TypeScript</code> <code>Markdown</code> <code>文档站</code>
 
 ClassFire 官方文档站源码，跟随主库迭代，含部署指南、数据模型与 API 参考。
 
-<img src="https://img.shields.io/github/last-commit/QianKunBoss/CSMS-docs-next?style=flat-square&color=58A6FF&labelColor=0B1F33&label=last+commit" alt="commit" />
+<img src="https://img.shields.io/github/last-commit/QianKunBoss/ClassFire-docs-next?style=flat-square&color=58A6FF&labelColor=0B1F33&label=last+commit" alt="commit" />
 
-<a href="https://github.com/QianKunBoss/CSMS-docs-next"><img src="https://img.shields.io/badge/查看仓库-0B1F33?style=for-the-badge&logo=github&logoColor=7DF9FF" alt="repo" /></a>
+<a href="https://github.com/QianKunBoss/ClassFire-docs-next"><img src="https://img.shields.io/badge/查看仓库-0B1F33?style=for-the-badge&logo=github&logoColor=7DF9FF" alt="repo" /></a>
 
 </td>
 </tr>
